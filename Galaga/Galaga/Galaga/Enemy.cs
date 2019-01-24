@@ -63,6 +63,10 @@ namespace Galaga
                 enemyPos.Y++;
             }
         }
+        public Rectangle getPos()
+        {
+            return 
+        }
     }
 }
 
