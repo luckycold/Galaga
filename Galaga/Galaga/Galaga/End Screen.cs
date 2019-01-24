@@ -21,8 +21,8 @@ namespace Galaga
             resultText = "-RESULTS-";
 
             cs = new Current_Score();
-            shotsFired = "SHOTS FIRED             " + cs.getShotsFired();
-            numOfHits = "NUMBER OF HITS           " + cs.getHits();
+            shotsFired = "SHOTS FIRED           " + cs.getShotsFired();
+            numOfHits = "NUMBER OF HITS        " + cs.getHits();
             hitMissRatio = "HIT-MISS RATIO        " + cs.getAccuracy();
         }
 
