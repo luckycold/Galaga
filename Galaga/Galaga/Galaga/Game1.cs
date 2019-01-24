@@ -25,8 +25,9 @@ namespace Galaga
         int screenWidth, screenHeight, timer, seconds;
         Current_Score currentScore;
         End_Screen endScreen;
+        Texture2D enemyTex;
         bool gameStatus;
-
+        Enemies enemy;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -59,6 +60,7 @@ namespace Galaga
             gameStatus = true;
             timer = 0;
             seconds = 0;
+            enemy = new Enemies(enemyTex);
             base.Initialize();
         }
 
@@ -75,6 +77,7 @@ namespace Galaga
             starTexture = this.Content.Load<Texture2D>("Star");
             scoreFont = this.Content.Load<SpriteFont>("CurrentScore");
             endFont = this.Content.Load<SpriteFont>("EndScreen");
+            enemyTex = this.Content.Load<Texture2D>("Enemy");
         }
 
         /// <summary>
@@ -105,6 +108,7 @@ namespace Galaga
             {
                 starArray[i].starMove();
             }
+            enemy.move();
             base.Update(gameTime);
         }
 
