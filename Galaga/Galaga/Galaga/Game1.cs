@@ -20,12 +20,16 @@ namespace Galaga
         SpriteBatch spriteBatch;
 
         Background[] starArray;
-        Texture2D starTexture;
+        Texture2D starTexture, missileTexture, shipTexture;
         SpriteFont scoreFont, endFont;
         int screenWidth, screenHeight, timer, seconds;
         Current_Score currentScore;
         End_Screen endScreen;
         bool gameStatus;
+        KeyboardState oldKB;
+        Player player1;
+
+        List<Missile> missiles;
 
         public Game1()
         {
@@ -59,6 +63,9 @@ namespace Galaga
             gameStatus = true;
             timer = 0;
             seconds = 0;
+            missiles = new List<Missile>();
+            oldKB = Keyboard.GetState();
+            player1 = new Player();
             base.Initialize();
         }
 
@@ -75,6 +82,9 @@ namespace Galaga
             starTexture = this.Content.Load<Texture2D>("Star");
             scoreFont = this.Content.Load<SpriteFont>("CurrentScore");
             endFont = this.Content.Load<SpriteFont>("EndScreen");
+            missileTexture = Content.Load<Texture2D>("missile");
+            shipTexture = Content.Load<Texture2D>("ship");
+            player1 = new Player(shipTexture, new Rectangle(311, screenHeight-100, 50, 50));
         }
 
         /// <summary>
@@ -94,6 +104,7 @@ namespace Galaga
         protected override void Update(GameTime gameTime)
         {
             KeyboardState kb = Keyboard.GetState();
+            MouseState mouse = Mouse.GetState();
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || kb.IsKeyDown(Keys.Escape))
                 this.Exit();
@@ -105,6 +116,29 @@ namespace Galaga
             {
                 starArray[i].starMove();
             }
+            if (kb.IsKeyDown(Keys.Left) && player1.Rectangle.X>0)
+            {
+                player1.moveLeft();
+            }
+            if (kb.IsKeyDown(Keys.Right) && player1.Rectangle.X+50 < screenWidth)
+            {
+                player1.moveRight();
+            }
+            if (kb.IsKeyDown(Keys.Space) && !oldKB.IsKeyDown(Keys.Space))
+            {
+                Missile m = new Missile(missileTexture, false, new Rectangle(player1.Rectangle.X+23, player1.Rectangle.Y, 4, 20), new Vector2(2, 10));
+                missiles.Add(m);
+            }
+            for (int i=missiles.Count-1; i>-1; i--)
+            {
+                missiles[i].update();
+                if (!missiles[i].isOnScreen(graphics))
+                {
+                    missiles.Remove(missiles[i]);
+                }
+            }
+            player1.update();
+            oldKB = kb;
             base.Update(gameTime);
         }
 
@@ -122,7 +156,11 @@ namespace Galaga
             {
                 for (int i = 0; i < starArray.Length; i++)
                     spriteBatch.Draw(starTexture, new Rectangle(starArray[i].getPosX(), starArray[i].getPosY(), starArray[i].getWidth(), starArray[i].getHeight()), starArray[i].getColor());
-
+                foreach (Missile m in missiles)
+                {
+                    spriteBatch.Draw(m.Texture, m.Rectangle, null, Color.White, m.Rotation, m.Origin, SpriteEffects.None, 0);
+                }
+                spriteBatch.Draw(player1.Texture, player1.Rectangle, Color.White);
                 spriteBatch.DrawString(scoreFont, currentScore.getCurrentScoreText(), new Vector2(20, 0), Color.Red);
                 spriteBatch.DrawString(scoreFont, "" + currentScore.getCurrentScore(), new Vector2(30, 30), Color.White);
             }
