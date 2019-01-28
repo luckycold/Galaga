@@ -18,6 +18,7 @@ with.
     the size of the font.
     -->
     <Size>14</Size>
+    <Size>30</Size>
 
     <!--
     Spacing is a float value, measured in pixels. Modify this value to change

@@ -20,12 +20,25 @@ namespace Galaga
         SpriteBatch spriteBatch;
 
         Background[] starArray;
-        Texture2D starTexture;
+<<<<<<< HEAD
+        Texture2D starTexture, missileTexture, shipTexture;
+=======
+        Texture2D starTexture, theme;
+>>>>>>> Ken
         SpriteFont scoreFont, endFont;
         int screenWidth, screenHeight, timer, seconds;
         Current_Score currentScore;
         End_Screen endScreen;
+<<<<<<< HEAD
         bool gameStatus;
+        KeyboardState oldKB;
+        Player player1;
+
+        List<Missile> missiles;
+=======
+        bool gameStatus, spacePressed;
+        Rectangle themeRect;
+>>>>>>> Ken
 
         public Game1()
         {
@@ -57,8 +70,16 @@ namespace Galaga
             currentScore = new Current_Score();
             endScreen = new End_Screen();
             gameStatus = true;
+            spacePressed = false;
             timer = 0;
             seconds = 0;
+<<<<<<< HEAD
+            missiles = new List<Missile>();
+            oldKB = Keyboard.GetState();
+            player1 = new Player();
+=======
+            themeRect = new Rectangle(0, 0, screenWidth, 500);
+>>>>>>> Ken
             base.Initialize();
         }
 
@@ -75,6 +96,13 @@ namespace Galaga
             starTexture = this.Content.Load<Texture2D>("Star");
             scoreFont = this.Content.Load<SpriteFont>("CurrentScore");
             endFont = this.Content.Load<SpriteFont>("EndScreen");
+<<<<<<< HEAD
+            missileTexture = Content.Load<Texture2D>("missile");
+            shipTexture = Content.Load<Texture2D>("ship");
+            player1 = new Player(shipTexture, new Rectangle(311, screenHeight-100, 50, 50));
+=======
+            theme = this.Content.Load<Texture2D>("Galaga theme");
+>>>>>>> Ken
         }
 
         /// <summary>
@@ -94,6 +122,7 @@ namespace Galaga
         protected override void Update(GameTime gameTime)
         {
             KeyboardState kb = Keyboard.GetState();
+            MouseState mouse = Mouse.GetState();
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || kb.IsKeyDown(Keys.Escape))
                 this.Exit();
@@ -101,10 +130,34 @@ namespace Galaga
             // TODO: Add your update logic here
             timer++;
             seconds = timer % 60;
+            if(kb.IsKeyDown(Keys.Space)) { spacePressed = true; }
             for(int i = 0; i < starArray.Length;i++)
             {
                 starArray[i].starMove();
             }
+            if (kb.IsKeyDown(Keys.Left) && player1.Rectangle.X>0)
+            {
+                player1.moveLeft();
+            }
+            if (kb.IsKeyDown(Keys.Right) && player1.Rectangle.X+50 < screenWidth)
+            {
+                player1.moveRight();
+            }
+            if (kb.IsKeyDown(Keys.Space) && !oldKB.IsKeyDown(Keys.Space))
+            {
+                Missile m = new Missile(missileTexture, false, new Rectangle(player1.Rectangle.X+23, player1.Rectangle.Y, 4, 20), new Vector2(2, 10));
+                missiles.Add(m);
+            }
+            for (int i=missiles.Count-1; i>-1; i--)
+            {
+                missiles[i].update();
+                if (!missiles[i].isOnScreen(graphics))
+                {
+                    missiles.Remove(missiles[i]);
+                }
+            }
+            player1.update();
+            oldKB = kb;
             base.Update(gameTime);
         }
 
@@ -118,21 +171,42 @@ namespace Galaga
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
-            if(gameStatus)
+            if(spacePressed)
             {
+<<<<<<< HEAD
                 for (int i = 0; i < starArray.Length; i++)
                     spriteBatch.Draw(starTexture, new Rectangle(starArray[i].getPosX(), starArray[i].getPosY(), starArray[i].getWidth(), starArray[i].getHeight()), starArray[i].getColor());
-
+                foreach (Missile m in missiles)
+                {
+                    spriteBatch.Draw(m.Texture, m.Rectangle, null, Color.White, m.Rotation, m.Origin, SpriteEffects.None, 0);
+                }
+                spriteBatch.Draw(player1.Texture, player1.Rectangle, Color.White);
                 spriteBatch.DrawString(scoreFont, currentScore.getCurrentScoreText(), new Vector2(20, 0), Color.Red);
                 spriteBatch.DrawString(scoreFont, "" + currentScore.getCurrentScore(), new Vector2(30, 30), Color.White);
+=======
+                if (gameStatus)
+                {
+                    for (int i = 0; i < starArray.Length; i++)
+                        spriteBatch.Draw(starTexture, new Rectangle(starArray[i].getPosX(), starArray[i].getPosY(), starArray[i].getWidth(), starArray[i].getHeight()), starArray[i].getColor());
+
+                    spriteBatch.DrawString(scoreFont, currentScore.getCurrentScoreText(), new Vector2(20, 0), Color.Red);
+                    spriteBatch.DrawString(scoreFont, "" + currentScore.getCurrentScore(), new Vector2(30, 30), Color.White);
+                }
+                else //gameStatus = false, means that the player ran out of lives and died --> game over
+                {
+                    spriteBatch.DrawString(endFont, endScreen.getGameOver(), new Vector2(screenWidth / 2 - 100, 50), Color.AliceBlue);
+                    spriteBatch.DrawString(endFont, endScreen.getResult(), new Vector2(screenWidth / 2 - 100, screenHeight / 2), Color.Red);
+                    spriteBatch.DrawString(endFont, endScreen.getShotsFired(), new Vector2(50, screenHeight / 2 + 50), Color.Yellow);
+                    spriteBatch.DrawString(endFont, endScreen.getNumOfHits(), new Vector2(50, screenHeight / 2 + 100), Color.Yellow);
+                    spriteBatch.DrawString(endFont, endScreen.getHitMissRatio(), new Vector2(50, screenHeight / 2 + 150), Color.White);
+                }
+>>>>>>> Ken
             }
-            else //gameStatus = false, means that the player ran out of lives and died --> game over
+            else
             {
-                spriteBatch.DrawString(endFont, endScreen.getGameOver(), new Vector2(screenWidth / 2, screenHeight / 2), Color.AliceBlue);
-                spriteBatch.DrawString(endFont, endScreen.getResult(), new Vector2(screenWidth / 2, screenHeight / 2), Color.Red);
-                spriteBatch.DrawString(endFont, endScreen.getShotsFired(), new Vector2(screenWidth / 2, screenWidth / 2 + 50), Color.Yellow);
-                spriteBatch.DrawString(endFont, endScreen.getNumOfHits(), new Vector2(screenWidth / 2, screenHeight / 2 + 100), Color.Yellow);
-                spriteBatch.DrawString(endFont, endScreen.getHitMissRatio(), new Vector2(screenWidth / 2, screenHeight / 2 + 150), Color.White);
+                spriteBatch.Draw(theme, themeRect, Color.White);
+                spriteBatch.DrawString(endFont, "Press SPACE to play", new Vector2(100, screenHeight / 2), Color.Red);
+                spriteBatch.DrawString(endFont, "Created by:\n Angelo\n Luke\n Ken\n Sujeet", new Vector2(100, screenHeight / 2 + 100), Color.White);
             }
 
             spriteBatch.End();
