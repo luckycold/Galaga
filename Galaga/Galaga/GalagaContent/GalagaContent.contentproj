@@ -51,7 +51,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <Compile Include="missile.png">
       <Name>missile</Name>
       <Importer>TextureImporter</Importer>
@@ -61,10 +60,9 @@
   <ItemGroup>
     <Compile Include="ship.png">
       <Name>ship</Name>
-=======
+    </Compile>
     <Compile Include="Galaga theme.jpg">
       <Name>Galaga theme</Name>
->>>>>>> Ken
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

@@ -20,25 +20,17 @@ namespace Galaga
         SpriteBatch spriteBatch;
 
         Background[] starArray;
-<<<<<<< HEAD
-        Texture2D starTexture, missileTexture, shipTexture;
-=======
-        Texture2D starTexture, theme;
->>>>>>> Ken
+        Texture2D starTexture, missileTexture, shipTexture, theme;
         SpriteFont scoreFont, endFont;
         int screenWidth, screenHeight, timer, seconds;
         Current_Score currentScore;
         End_Screen endScreen;
-<<<<<<< HEAD
-        bool gameStatus;
         KeyboardState oldKB;
         Player player1;
 
         List<Missile> missiles;
-=======
         bool gameStatus, spacePressed;
         Rectangle themeRect;
->>>>>>> Ken
 
         public Game1()
         {
@@ -73,13 +65,10 @@ namespace Galaga
             spacePressed = false;
             timer = 0;
             seconds = 0;
-<<<<<<< HEAD
             missiles = new List<Missile>();
             oldKB = Keyboard.GetState();
             player1 = new Player();
-=======
             themeRect = new Rectangle(0, 0, screenWidth, 500);
->>>>>>> Ken
             base.Initialize();
         }
 
@@ -96,13 +85,10 @@ namespace Galaga
             starTexture = this.Content.Load<Texture2D>("Star");
             scoreFont = this.Content.Load<SpriteFont>("CurrentScore");
             endFont = this.Content.Load<SpriteFont>("EndScreen");
-<<<<<<< HEAD
             missileTexture = Content.Load<Texture2D>("missile");
             shipTexture = Content.Load<Texture2D>("ship");
             player1 = new Player(shipTexture, new Rectangle(311, screenHeight-100, 50, 50));
-=======
             theme = this.Content.Load<Texture2D>("Galaga theme");
->>>>>>> Ken
         }
 
         /// <summary>
@@ -173,7 +159,6 @@ namespace Galaga
             spriteBatch.Begin();
             if(spacePressed)
             {
-<<<<<<< HEAD
                 for (int i = 0; i < starArray.Length; i++)
                     spriteBatch.Draw(starTexture, new Rectangle(starArray[i].getPosX(), starArray[i].getPosY(), starArray[i].getWidth(), starArray[i].getHeight()), starArray[i].getColor());
                 foreach (Missile m in missiles)
@@ -183,7 +168,6 @@ namespace Galaga
                 spriteBatch.Draw(player1.Texture, player1.Rectangle, Color.White);
                 spriteBatch.DrawString(scoreFont, currentScore.getCurrentScoreText(), new Vector2(20, 0), Color.Red);
                 spriteBatch.DrawString(scoreFont, "" + currentScore.getCurrentScore(), new Vector2(30, 30), Color.White);
-=======
                 if (gameStatus)
                 {
                     for (int i = 0; i < starArray.Length; i++)
@@ -200,7 +184,6 @@ namespace Galaga
                     spriteBatch.DrawString(endFont, endScreen.getNumOfHits(), new Vector2(50, screenHeight / 2 + 100), Color.Yellow);
                     spriteBatch.DrawString(endFont, endScreen.getHitMissRatio(), new Vector2(50, screenHeight / 2 + 150), Color.White);
                 }
->>>>>>> Ken
             }
             else
             {
