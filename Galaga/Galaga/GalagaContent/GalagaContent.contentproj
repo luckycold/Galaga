@@ -63,6 +63,9 @@
   <ItemGroup>
     <Compile Include="ship.png">
       <Name>ship</Name>
+    </Compile>
+    <Compile Include="Enemy.png">
+      <Name>Enemy</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

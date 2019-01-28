@@ -31,7 +31,9 @@ namespace Galaga
         Player player1;
 
         List<Missile> missiles;
-
+        Texture2D enemyTex;
+        Enemies enemy;
+        List<Rectangle> eList;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -69,6 +71,7 @@ namespace Galaga
             missiles = new List<Missile>();
             oldKB = Keyboard.GetState();
             player1 = new Player();
+            enemy = new Enemies(enemyTex);
             base.Initialize();
         }
 
@@ -89,6 +92,7 @@ namespace Galaga
             missileTexture = Content.Load<Texture2D>("missile");
             shipTexture = Content.Load<Texture2D>("ship");
             player1 = new Player(shipTexture, new Rectangle(311, screenHeight-100, 50, 50));
+            enemyTex = this.Content.Load<Texture2D>("Enemy");
         }
 
         /// <summary>
@@ -144,6 +148,7 @@ namespace Galaga
             }
             player1.update();
             oldKB = kb;
+            eList = enemy.move();
             base.Update(gameTime);
         }
 
@@ -191,7 +196,10 @@ namespace Galaga
                 spriteBatch.DrawString(endFont, "Press SPACE to play", new Vector2(100, screenHeight / 2), Color.Red);
                 spriteBatch.DrawString(endFont, "Created by:\n Angelo\n Luke\n Ken\n Sujeet", new Vector2(100, screenHeight / 2 + 100), Color.White);
             }
-
+            for(int i = 0; i < eList.Count;i++)
+            {
+                spriteBatch.Draw(enemyTex, eList[i], Color.White);
+            }
             spriteBatch.End();
             base.Draw(gameTime);
         }
