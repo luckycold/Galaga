@@ -19,6 +19,13 @@ namespace Galaga
         int timer = 0, playerMissilesFired = 0;
         bool fireCooldown;
         
+        public Player()
+        {
+            tex = null;
+            rect = new Rectangle();
+            xPos = 0;
+            yPos = 0;
+        }
 
         public Player(Texture2D texture, Rectangle rectangle)
         {
@@ -26,6 +33,19 @@ namespace Galaga
             rect = rectangle;
             xPos = rect.X;
             yPos = rect.Y;
+            playerSpeed = 7;
+        }
+
+        public Texture2D Texture
+        {
+            get { return tex; }
+            set { tex = value; }
+        }
+
+        public Rectangle Rectangle
+        {
+            get { return rect; }
+            set { rect = value; }
         }
 
         public void moveLeft()

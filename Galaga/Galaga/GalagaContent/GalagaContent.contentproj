@@ -53,6 +53,16 @@
   <ItemGroup>
     <Compile Include="Galaga theme.jpg">
       <Name>Galaga theme</Name>
+    </Compile>
+    <Compile Include="missile.png">
+      <Name>missile</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ship.png">
+      <Name>ship</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

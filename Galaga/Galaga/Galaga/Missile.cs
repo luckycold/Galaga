@@ -41,12 +41,12 @@ namespace Galaga
             if (enemyMissile)
             {
                 rotation = MathHelper.ToRadians(180);
-                velocity = 10;
+                velocity = 15;
             }
             else
             {
                 rotation = 0;
-                velocity = -10;
+                velocity = -15;
             }
         }
 
