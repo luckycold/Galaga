@@ -28,6 +28,7 @@ namespace Galaga
         Texture2D enemyTex;
         bool gameStatus;
         Enemies enemy;
+        List<Rectangle> eList;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -108,7 +109,7 @@ namespace Galaga
             {
                 starArray[i].starMove();
             }
-            enemy.move();
+            eList = enemy.move();
             base.Update(gameTime);
         }
 
@@ -138,7 +139,10 @@ namespace Galaga
                 spriteBatch.DrawString(endFont, endScreen.getNumOfHits(), new Vector2(screenWidth / 2, screenHeight / 2 + 100), Color.Yellow);
                 spriteBatch.DrawString(endFont, endScreen.getHitMissRatio(), new Vector2(screenWidth / 2, screenHeight / 2 + 150), Color.White);
             }
-
+            for(int i = 0; i < eList.Count;i++)
+            {
+                spriteBatch.Draw(enemyTex, eList[i], Color.White);
+            }
             spriteBatch.End();
             base.Draw(gameTime);
         }
