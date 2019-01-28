@@ -25,13 +25,15 @@ namespace Galaga
         int screenWidth, screenHeight, timer, seconds;
         Current_Score currentScore;
         End_Screen endScreen;
+        bool gameStatus, spacePressed;
+        Rectangle themeRect;
         KeyboardState oldKB;
         Player player1;
 
         List<Missile> missiles;
-        bool gameStatus, spacePressed;
-        Rectangle themeRect;
-
+        Texture2D enemyTex;
+        Enemies enemy;
+        List<Rectangle> eList;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -69,6 +71,11 @@ namespace Galaga
             oldKB = Keyboard.GetState();
             player1 = new Player();
             themeRect = new Rectangle(0, 0, screenWidth, 500);
+            themeRect = new Rectangle(0, 0, screenWidth, 500);
+            missiles = new List<Missile>();
+            oldKB = Keyboard.GetState();
+            player1 = new Player();
+            enemy = new Enemies(enemyTex);
             base.Initialize();
         }
 
@@ -89,6 +96,10 @@ namespace Galaga
             shipTexture = Content.Load<Texture2D>("ship");
             player1 = new Player(shipTexture, new Rectangle(311, screenHeight-100, 50, 50));
             theme = this.Content.Load<Texture2D>("Galaga theme");
+            missileTexture = Content.Load<Texture2D>("missile");
+            shipTexture = Content.Load<Texture2D>("ship");
+            player1 = new Player(shipTexture, new Rectangle(311, screenHeight-100, 50, 50));
+            enemyTex = this.Content.Load<Texture2D>("Enemy");
         }
 
         /// <summary>
@@ -144,6 +155,7 @@ namespace Galaga
             }
             player1.update();
             oldKB = kb;
+            eList = enemy.move();
             base.Update(gameTime);
         }
 
@@ -159,6 +171,22 @@ namespace Galaga
             spriteBatch.Begin();
             if(spacePressed)
             {
+                if (gameStatus)
+                {
+                    for (int i = 0; i < starArray.Length; i++)
+                        spriteBatch.Draw(starTexture, new Rectangle(starArray[i].getPosX(), starArray[i].getPosY(), starArray[i].getWidth(), starArray[i].getHeight()), starArray[i].getColor());
+
+                    spriteBatch.DrawString(scoreFont, currentScore.getCurrentScoreText(), new Vector2(20, 0), Color.Red);
+                    spriteBatch.DrawString(scoreFont, "" + currentScore.getCurrentScore(), new Vector2(30, 30), Color.White);
+                }
+                else //gameStatus = false, means that the player ran out of lives and died --> game over
+                {
+                    spriteBatch.DrawString(endFont, endScreen.getGameOver(), new Vector2(screenWidth / 2 - 100, 50), Color.AliceBlue);
+                    spriteBatch.DrawString(endFont, endScreen.getResult(), new Vector2(screenWidth / 2 - 100, screenHeight / 2), Color.Red);
+                    spriteBatch.DrawString(endFont, endScreen.getShotsFired(), new Vector2(50, screenHeight / 2 + 50), Color.Yellow);
+                    spriteBatch.DrawString(endFont, endScreen.getNumOfHits(), new Vector2(50, screenHeight / 2 + 100), Color.Yellow);
+                    spriteBatch.DrawString(endFont, endScreen.getHitMissRatio(), new Vector2(50, screenHeight / 2 + 150), Color.White);
+                }
                 for (int i = 0; i < starArray.Length; i++)
                     spriteBatch.Draw(starTexture, new Rectangle(starArray[i].getPosX(), starArray[i].getPosY(), starArray[i].getWidth(), starArray[i].getHeight()), starArray[i].getColor());
                 foreach (Missile m in missiles)
@@ -191,7 +219,10 @@ namespace Galaga
                 spriteBatch.DrawString(endFont, "Press SPACE to play", new Vector2(100, screenHeight / 2), Color.Red);
                 spriteBatch.DrawString(endFont, "Created by:\n Angelo\n Luke\n Ken\n Sujeet", new Vector2(100, screenHeight / 2 + 100), Color.White);
             }
-
+            for(int i = 0; i < eList.Count;i++)
+            {
+                spriteBatch.Draw(enemyTex, eList[i], Color.White);
+            }
             spriteBatch.End();
             base.Draw(gameTime);
         }
