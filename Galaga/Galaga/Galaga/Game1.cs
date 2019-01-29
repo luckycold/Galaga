@@ -175,9 +175,12 @@ namespace Galaga
                 {
                     for (int i = 0; i < starArray.Length; i++)
                         spriteBatch.Draw(starTexture, new Rectangle(starArray[i].getPosX(), starArray[i].getPosY(), starArray[i].getWidth(), starArray[i].getHeight()), starArray[i].getColor());
-
                     spriteBatch.DrawString(scoreFont, currentScore.getCurrentScoreText(), new Vector2(20, 0), Color.Red);
                     spriteBatch.DrawString(scoreFont, "" + currentScore.getCurrentScore(), new Vector2(30, 30), Color.White);
+                    for (int i = 0; i < eList.Count; i++)
+                    {
+                        spriteBatch.Draw(enemyTex, eList[i], Color.White);
+                    }
                 }
                 else //gameStatus = false, means that the player ran out of lives and died --> game over
                 {
@@ -218,10 +221,6 @@ namespace Galaga
                 spriteBatch.Draw(theme, themeRect, Color.White);
                 spriteBatch.DrawString(endFont, "Press SPACE to play", new Vector2(100, screenHeight / 2), Color.Red);
                 spriteBatch.DrawString(endFont, "Created by:\n Angelo\n Luke\n Ken\n Sujeet", new Vector2(100, screenHeight / 2 + 100), Color.White);
-            }
-            for(int i = 0; i < eList.Count;i++)
-            {
-                spriteBatch.Draw(enemyTex, eList[i], Color.White);
             }
             spriteBatch.End();
             base.Draw(gameTime);

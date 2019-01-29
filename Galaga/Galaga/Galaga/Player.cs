@@ -18,6 +18,7 @@ namespace Galaga
         double playerSpeed, xPos, yPos, seconds, startShotTime;
         int timer = 0, playerMissilesFired = 0;
         bool fireCooldown;
+        int lives;
         
         public Player()
         {
@@ -25,6 +26,7 @@ namespace Galaga
             rect = new Rectangle();
             xPos = 0;
             yPos = 0;
+            lives = 3;
         }
 
         public Player(Texture2D texture, Rectangle rectangle)
@@ -34,6 +36,7 @@ namespace Galaga
             xPos = rect.X;
             yPos = rect.Y;
             playerSpeed = 7;
+            lives = 3;
         }
 
         public Texture2D Texture
